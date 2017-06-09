@@ -1,19 +1,27 @@
-var mysql = require("mysql");
+const Sequelize = require("sequelize");
+const path = require('path');
 
-var connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "burgers_db"
-});
+var db = {};
 
-
-connection.connect(function(err) {
-  if (err) {
-    console.error("error connecting: " + err.stack);
-    return;
+const sequelize = new Sequelize({
+  username: "root",
+  password: null,
+  database: "burger_db",
+  host: "127.0.0.1",
+  dialect: "mysql",
+  pool: {
+    max: 1,
+    min: 0,
+    idle: 10000
+  },
+  sync: {
+    force: false
   }
-  console.log("connected as id " + connection.threadId);
 });
 
-module.exports = connection;
+db.Burger = sequelize.import(path.join(process.cwd(), "./models/burger.js"));
+
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+module.exports = db;

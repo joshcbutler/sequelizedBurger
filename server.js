@@ -3,6 +3,7 @@ var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
 
 var app = express();
+var db = require("./config/connection.js");
 // Serve static content for the app from the "public" directory in the application directory.
 app.use(express.static(__dirname + "/public"));
 
@@ -10,6 +11,8 @@ app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+
+
 // override with POST having ?_method=DELETE
 app.use(methodOverride("_method"));
 var exphbs = require("express-handlebars");
